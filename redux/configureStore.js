@@ -1,13 +1,18 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-// import { homeMenuList } from '../shared/homeMenuList';
 import { mainPageReducer } from './mainPageReducer';
+import { categoryReducer } from './categoryReducer';
+import { itemsReducer } from './itemsReducer';
+import { cartReducer } from './cartReducer'
 
 
 export const configureStore = () => {
     const store = createStore(
         combineReducers({
-            mainPage: mainPageReducer
+            mainPage: mainPageReducer,
+            category: categoryReducer,
+            items: itemsReducer,
+            cartItem: cartReducer
         }),
         applyMiddleware(thunk)
     );
