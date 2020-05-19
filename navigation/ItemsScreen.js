@@ -5,9 +5,10 @@ import Items from '../components/ItemsComponent';
 
 
 const mapStateToProps = state => {
-    // console.log(state)
+
     return {
-        items: state.items.ItemsData.data
+        itemsIsLoading: state.items.isLoading,
+        items: state.items.ItemsData
     }
 };
 
@@ -24,6 +25,7 @@ class ItemsScreen extends Component {
             <Items
                 navigate={navigate}
                 items={this.props.items}
+                itemsIsLoading={this.props.itemsIsLoading}
             />
         )
     }

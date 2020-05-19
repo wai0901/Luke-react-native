@@ -20,7 +20,7 @@ export default StyleSheet.create({
     socialMedia: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 15,
+        marginBottom: 30,
         marginHorizontal: 50
     },
     drawerImage: {

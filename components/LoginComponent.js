@@ -8,10 +8,7 @@ class LoginComponent extends Component {
         super(props);
 
         this.state = {
-            username: '',
             password: '',
-            firstname: '',
-            lastname: '',
             email: '',
             remember: false,
         };
@@ -27,8 +24,8 @@ class LoginComponent extends Component {
                 <Input
                     placeholder='E-mail'
                     leftIcon={{type: 'materialIcons', name: 'email'}}
-                    onChangeText={username => this.setState({username})}
-                    value={this.state.username}
+                    onChangeText={email => this.setState({email})}
+                    value={this.state.email}
                     containerStyle={styles.formInput}
                     leftIconContainerStyle={styles.formIcon}
                 />
@@ -51,14 +48,6 @@ class LoginComponent extends Component {
                     <Button
                         onPress={() => this.handleLogin()}
                         title='Login'
-                        // icon={
-                        //     <Icon
-                        //         name='sign-in'
-                        //         type='font-awesome'
-                        //         color='#fff'
-                        //         iconStyle={{marginRight: 10}}
-                        //     />
-                        // }
                         buttonStyle={{backgroundColor: '#2d3436'}}
                     />
                 </View>

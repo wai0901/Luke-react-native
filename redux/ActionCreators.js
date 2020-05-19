@@ -1,16 +1,18 @@
 import axios from 'axios';
 import * as ActionTypes from './ActionTypes';
+import firebase from "../firebaseConfig";
 import { baseUrl } from '../shared/baseUrl';
 
 
+const databaseRef = firebase.database();
 
 //Fetch Data from server
 export const fetchMainData = () => async dispatch => {
     dispatch(mainDataLoading);
+    
     try {
-        const response = await axios.get(baseUrl + 'homeMenu')
-        
-        dispatch(addMainData(response))
+        databaseRef.ref('homeMenu').on('value', snapshot => {
+        dispatch(addMainData(snapshot.val()))})
     } catch(err) {
         dispatch(mainFailed(err));
     } 
@@ -36,9 +38,8 @@ export const fetchCategoryData = (link) => async dispatch => {
     dispatch(categoryDataLoading);
 
     try {
-        const response = await axios.get(baseUrl + link)
-
-        dispatch(addCategoryData(response))
+        databaseRef.ref(link).on('value', snapshot => {
+            dispatch(addCategoryData(snapshot.val()))})
     } catch(err) {
         dispatch(categoryFailed(err));
     } 
@@ -64,9 +65,8 @@ export const fetchItemsData = (link) => async dispatch => {
     dispatch(ItemsDataLoading);
 
     try {
-        const response = await axios.get(baseUrl + link)
-
-        dispatch(addItemsData(response))
+        databaseRef.ref(link).on('value', snapshot => {
+            dispatch(addItemsData(snapshot.val()))})
     } catch(err) {
         dispatch(ItemsFailed(err));
     } 
@@ -89,14 +89,11 @@ export const ItemsDataLoading = () => ({
 
 //Post to Server
 export const postCartItems = (cartItem) => async dispatch => {
-    // dispatch(cartDataLoading);
+    dispatch(cartDataLoading);
+
     try {
-        axios.post(baseUrl + 'cartItems', { cartItem })
-
-        const response = await axios.get(baseUrl + 'cartItems')
-        
-        dispatch(addCartData(response))
-
+        await databaseRef.ref('cartItems').push(cartItem)
+            
     } catch(err) {
         dispatch(addCartItemFailed(err));
     }
@@ -104,14 +101,10 @@ export const postCartItems = (cartItem) => async dispatch => {
 }
 //Update request
 export const updateCartItems = (cartItem, id) => async dispatch => {
-    // dispatch(cartDataLoading);
-    // console.log(cartItem)
+    dispatch(cartDataLoading);
+   
     try {
-        axios.put(baseUrl + 'cartItems/' + id, { cartItem })
-
-        const response = await axios.get(baseUrl + 'cartItems')
-        
-        dispatch(addCartData(response))
+        await databaseRef.ref('cartItems/' + id).set(cartItem)
 
     } catch(err) {
         dispatch(addCartItemFailed(err));
@@ -120,13 +113,10 @@ export const updateCartItems = (cartItem, id) => async dispatch => {
 
 //delete request
 export const removeCartItems = (id) => async dispatch => {
-    // dispatch(cartDataLoading);
-    try {
-        axios.delete(baseUrl + 'cartItems/' + id, { params: { id: id } })
+    dispatch(cartDataLoading);
 
-        const response = await axios.get(baseUrl + 'cartItems')
-        
-        dispatch(addCartData(response))
+    try {
+        await databaseRef.ref('cartItems/' + id).remove()
        
     } catch(err) {
         dispatch(addCartItemFailed(err));
@@ -137,9 +127,19 @@ export const removeCartItems = (id) => async dispatch => {
 export const fetchCartData = () => async dispatch => {
     dispatch(cartDataLoading);
     try {
-        const response = await axios.get(baseUrl + 'cartItems')
-        
-        dispatch(addCartData(response))
+        await databaseRef.ref('cartItems').on('value', snapshot => {
+            let items = []
+            snapshot.forEach(child => {
+                items.push({
+                    _key: child.key,
+                    ...child.val()
+                });
+            })
+
+        dispatch(addCartData(items))
+        items = [];
+        })
+
     } catch(err) {
         dispatch(cartFailed(err));
     } 
@@ -158,4 +158,5 @@ export const addCartData = (response) => ({
 export const cartDataLoading = () => ({
     type: ActionTypes.FETCH_CART_LOADING,
 });
+
 

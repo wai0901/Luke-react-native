@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import RenderHome from './render-components/RenderHome';
+import RenderLoading from './render-components/RenderLoading';
 
 const mapStateToProps = state => {
+
     return {
         isLoading: state.mainPage.isLoading,
-        mainData: state.mainPage.homeMenu.data,
+        mainData: state.mainPage.homeMenu,
     }
 };
 
@@ -20,32 +22,38 @@ class HomeComponent extends Component {
         const { navigate } = this.props.navigation;
         
         return (
-            <ScrollView style={styles.container}  showsVerticalScrollIndicator={false}>
-                <View style={styles.featureContainer}>               
-                    <Image 
-                        style={styles.imageStyle} source={{ uri: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} 
-                    /> 
-                    <View style={styles.featureTextContainer}>
-                        <Text style={styles.featureTitle}>30% OFF</Text>
-                        <Text style={styles.featureDescription}>Entire Site</Text>
+            <>
+                <ScrollView style={styles.container}  showsVerticalScrollIndicator={false}>
+                    <View style={styles.featureContainer}>               
+                        <Image 
+                            style={styles.imageStyle} source={{ uri: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} 
+                        /> 
+                        <View style={styles.featureTextContainer}>
+                            <Text style={styles.featureTitle}>30% OFF</Text>
+                            <Text style={styles.featureDescription}>Entire Site</Text>
+                        </View>
                     </View>
-                </View>
-                <View style={{ marginLeft: 5 }}>
-                    <FlatList 
-                        showsVerticalScrollIndicator={false}
-                        numColumns={2}
-                        data={this.props.mainData}
-                        keyExtractor={item => item.id}
-                        renderItem={({item}) => 
-                            <RenderHome
-                                item={item}
-                                navigate={navigate}
-                            />
-                        }
-                    />
-                </View>
-                <Text style={styles.loading}>{ this.props.isLoading ? 'Loading....' : null }</Text>
-            </ScrollView>
+                    <View style={{ marginLeft: 5 }}>
+                        <FlatList 
+                            showsVerticalScrollIndicator={false}
+                            numColumns={2}
+                            data={this.props.mainData}
+                            keyExtractor={item => item.id}
+                            renderItem={({item}) => 
+                                <RenderHome
+                                    item={item}
+                                    navigate={navigate}
+                                />
+                            }
+                        />
+                    </View>
+                </ScrollView>
+                {
+                    this.props.isLoading ?
+                    <RenderLoading /> : 
+                    null
+                }
+            </>
         )
     }
 }
@@ -86,12 +94,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginBottom: 5,
     },
-    loading: {
-        position: 'absolute',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
 })
 
 export default connect(mapStateToProps)(HomeComponent);

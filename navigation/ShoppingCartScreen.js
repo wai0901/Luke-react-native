@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import ShoppingCartComponent from '../components/ShoppingCartComponent';
 import { fetchCartData } from '../redux/ActionCreators';
 
+
 const mapStateToProps = state => {
+    
     return {
-        cartItems: state.cartItem.cart.data
+        isLoading: state.cartItem.isLoading,
+        cartItems: state.cartItem.cart
     }
 }
 
@@ -22,11 +25,15 @@ class ShoppingCartScreen extends Component {
     static navigationOptions = { title: 'ShoppingCart' }
 
     render() {
-
+        
         return (
-            <ShoppingCartComponent 
-                cartItems={this.props.cartItems}
-            />
+
+                <ShoppingCartComponent 
+                    cartItems={this.props.cartItems}
+                    isLoading={this.props.isLoading}
+                />
+            
+            
         )
     }
 }

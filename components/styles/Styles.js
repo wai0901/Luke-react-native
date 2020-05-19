@@ -40,12 +40,13 @@ export default StyleSheet.create({
         position: 'absolute',
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(45, 52, 54, 0.6)',
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
+
     loadingText: {
-        fontSize: 15,
+        fontSize: 25,
+        fontWeight: 'bold',
         color: '#fff'
     }
 })

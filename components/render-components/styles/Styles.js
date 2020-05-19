@@ -39,4 +39,16 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff'
     },
+    loading: {
+        position: 'absolute',
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(45, 52, 54, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#fff'
+    }
 })

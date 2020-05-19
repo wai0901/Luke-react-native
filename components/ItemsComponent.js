@@ -3,15 +3,16 @@ import { View, FlatList, ScrollView } from 'react-native';
 import styles from './styles/Styles';
 import RenderItems from './render-components/RenderItem';
 import RenderModal from './render-components/RenderModal';
+import RenderLoading from './render-components/RenderLoading';
 import { connect } from 'react-redux';
 import { postCartItems, updateCartItems, fetchCartData } from '../redux/ActionCreators';
 
 
 const mapStateToProps = state => {
-    console.log(state.cartItem)
+    console.log(state.cartItem.isLoading)
     return {
-        isLoading: state.cartItem.isLoading,
-        inCartItems: state.cartItem.cart.data
+        cartIsLoading: state.cartItem.isLoading,
+        inCartItems: state.cartItem.cart
     }
 }
 
@@ -42,12 +43,12 @@ class ItemsComponent extends Component {
         }
 
         const addCartHandler = (cartItem, size, qty) => {
-            // console.log(this.props.inCartItems)
+
             if (this.props.inCartItems) {
                 if(findItem(this.props.inCartItems, cartItem, size)){
                     //find and update the item which already in cart
                     let updatedItem = sameItemInCart(this.props.inCartItems, cartItem, size, qty);
-                    let updatedItemId = getAxiosId(this.props.inCartItems, cartItem, size);
+                    let updatedItemId = getId(this.props.inCartItems, cartItem, size);
                     return this.props.updateCartItems(updatedItem, updatedItemId);
                 } else {
                     this.props.postCartItems(addItem(cartItem, size, qty));
@@ -58,37 +59,38 @@ class ItemsComponent extends Component {
         }
 
         return (
-            <ScrollView style={styles.container}>
-                <View style={{ marginLeft: 5 }}>
-                    <FlatList 
-                        showsVerticalScrollIndicator={false}
-                        numColumns={2}
-                        data={this.props.items}
-                        keyExtractor={item => item.id}
-                        renderItem={({item}) => 
-                        <RenderItems
-                                item={item}
-                                toggleModal={toggleModal}
-                                selectItemHandler={selectItemHandler}
-                            />
-                        }
+            <>
+                <ScrollView style={styles.container}>
+                    <View style={{ marginLeft: 5 }}>
+                        <FlatList 
+                            showsVerticalScrollIndicator={false}
+                            numColumns={2}
+                            data={this.props.items}
+                            keyExtractor={item => item.id}
+                            renderItem={({item}) => 
+                            <RenderItems
+                                    item={item}
+                                    toggleModal={toggleModal}
+                                    selectItemHandler={selectItemHandler}
+                                />
+                            }
+                        />
+                    </View>
+                    <RenderModal 
+                        item={this.state.selectedItem}
+                        toggleModal={toggleModal}
+                        showModal={this.state.showModal}
+                        addCartHandler={addCartHandler}
+                        fetchCartData={this.props.fetchCartData}
+                        cartIsLoading={this.props.cartIsLoading}
                     />
-                </View>
-                <RenderModal 
-                    item={this.state.selectedItem}
-                    toggleModal={toggleModal}
-                    showModal={this.state.showModal}
-                    addCartHandler={addCartHandler}
-                    fetchCartData={this.props.fetchCartData}
-                />
-                {/* {
-                    this.props.isLoading ?
-                    <View style={styles.loading}>
-                        <Text style={styles.loadingText}>{ this.props.isLoading ? 'Loading....' : null }</Text>
-                    </View>:
+                </ScrollView>
+                {
+                    this.props.itemsIsLoading ?
+                    <RenderLoading /> : 
                     null
-                } */}
-            </ScrollView>
+                }
+            </>
         )
     }
 }
@@ -107,26 +109,23 @@ const addItem = (item, size, qty) => {
     };
 }
 
-const getAxiosId = (cartItems, newItem, size) => {
+const getId = (cartItems, newItem, size) => {
     let foundItem = findItem(cartItems, newItem, size)
-    return foundItem.id;
+    return foundItem._key;
 }
 
 const sameItemInCart = (cartItems, newItem, size, qty) => {
     let item = findItem(cartItems, newItem, size);
     return {
-        ...item.cartItem,
-        quantity: Number(item.cartItem.quantity) + Number(qty)
+        ...item,
+        quantity: Number(item.quantity) + Number(qty)
     }
 }
 
 const findItem = (items, inputItem, size) => {
     let newId = inputItem.productId.concat(size);
-    return items.find(item => item.cartItem.productId === newId && item);
+    return items.find(item => item.productId === newId && item);
 }
-
-const deleteItems = (items, inputItemId) =>
-    items.filter(item => item.cartItem.productId !== inputItemId && item);
 
 function round(value, decimals) {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals);

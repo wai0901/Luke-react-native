@@ -5,7 +5,7 @@ import { Badge, Icon } from 'react-native-elements'
 
 const mapStateToProps = state => {
     return {
-        cartItems: state.cartItem.cart.data
+        cartItems: state.cartItem.cart
     }
 }
 
@@ -26,12 +26,12 @@ class CartIcon extends Component {
                      onPress={() => navigate('ShoppingCart')}
                 />
                 {
-                    this.props.cartItems ?
+                    this.props.cartItems.length > 0 ?
                     <Badge
                          status="error"
                          containerStyle={{ position: 'absolute', top: -4, right: -5 }}
                          value={
-                            this.props.cartItems.map(item => Number(item.cartItem.quantity)).reduce((t, c) => t + c)
+                            this.props.cartItems.map(item => Number(item.quantity)).reduce((t, c) => t + c, 0)
                          }
                     /> :
                     null

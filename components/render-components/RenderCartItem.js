@@ -12,8 +12,8 @@ const mapDispatchToProps = {
 
 const RenderCartItem = (props) => {
 
-        const item = props.item.cartItem;
-        // console.log(props)
+        const item = props.item;
+
     return (
         <Card
             featuredTitle={item.title}
@@ -40,7 +40,7 @@ const RenderCartItem = (props) => {
                             }
                             type="clear"
                             onPress={() => {
-                                props.changeQtyHandler(item, props.item.id, "plus");
+                                props.changeQtyHandler(item, props.item._key, "plus");
                                 Alert.alert(
                                     `Added 1 item to cart.`,
                                     `Size: ${item.size}`,
@@ -67,7 +67,7 @@ const RenderCartItem = (props) => {
                             }
                             type="clear"
                             onPress={() => {
-                                props.changeQtyHandler(item, props.item.id, "minus");
+                                props.changeQtyHandler(item, props.item._key, "minus");
                                 Alert.alert(
                                     `Removed 1 item from cart.`,
                                     `Size: ${item.size}`,
@@ -97,7 +97,7 @@ const RenderCartItem = (props) => {
                             }
                             type="clear"
                             onPress={() => {
-                                props.changeQtyHandler(item, props.item.id, "remove")
+                                props.changeQtyHandler(item, props.item._key, "remove")
                                 Alert.alert(
                                     `Removed item to cart.`,
                                     `Size: ${item.size}`,

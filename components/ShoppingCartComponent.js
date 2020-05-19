@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Text, View, FlatList, ScrollView, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ScrollView, Button } from 'react-native';
 import RenderCartItem from './render-components/RenderCartItem';
+import RenderLoading from './render-components/RenderLoading';
 import { connect } from 'react-redux';
 import { updateCartItems, removeCartItems } from '../redux/ActionCreators';
-
-const containerWidth = Dimensions.get('window').width / 2 - 40;
 
 const mapDispatchToProps = {
     updateCartItems: (cartItem, id) => (updateCartItems(cartItem, id)),
@@ -17,7 +16,6 @@ class ShoppingCartComponent extends Component {
 
     render() {
         
-        const { cartItems } = this.props
 
         const changeQtyHandler = (item, id, action) => {
             let qty = Number(item.quantity);
@@ -37,15 +35,14 @@ class ShoppingCartComponent extends Component {
             <>
                 <View style={styles.topContainer}>
                     <View style={styles.priceContainer}>               
-                        
+                        <Text style={styles.totalPrice} numberOfLines={1}>Total: $
                             {
-                                cartItems?
-                                <Text style={styles.totalPrice} numberOfLines={1}>
-                                    Total: ${cartItems.map(item => Number(item.cartItem.quantity * item.cartItem.price)).reduce((t, c) => t + c).toFixed(2)}
-                                </Text> :
-                                <Text>Total: $0.00</Text>
+                                this.props.cartItems === [] ?
+                                "0.00" :
+                                this.props.cartItems.map(item => Number(item.quantity * item.price)).reduce((t, c) => t + c, 0).toFixed(2) 
+
                             }
-                        
+                        </Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={styles.checkoutButton}>
@@ -62,7 +59,7 @@ class ShoppingCartComponent extends Component {
                     <View style={{ marginLeft: 5 }}>
                         <FlatList 
                             showsVerticalScrollIndicator={false}
-                            data={cartItems}
+                            data={this.props.cartItems}
                             keyExtractor={item => item.id}
                             renderItem={({item}) => 
                                 <RenderCartItem
@@ -72,8 +69,12 @@ class ShoppingCartComponent extends Component {
                             }
                         />
                     </View>
-                    <Text style={styles.loading}>{ this.props.isLoading ? 'Loading....' : null }</Text>
                 </ScrollView>
+                {
+                    this.props.isLoading ?
+                    <RenderLoading /> : 
+                    null
+                }
             </>
         )
     }
@@ -116,9 +117,15 @@ const styles = StyleSheet.create({
     },
     loading: {
         position: 'absolute',
-        flex: 1,
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(45, 52, 54, 0.6)',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#fff'
     }
 })
 

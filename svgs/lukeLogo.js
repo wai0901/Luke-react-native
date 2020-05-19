@@ -3,7 +3,19 @@ import { SvgXml } from "react-native-svg";
 
 
 export default function SvgFile(){
-    const lukeLogo = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 91.45 26.97"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#231f20;}</style></defs><rect y="0.13" width="26.43" height="26.43"/><rect class="cls-1" x="20.81" y="0.13" width="1.03" height="26.43"/><path class="cls-2" d="M961,547.31c0,1.78,0,4.75,0,5.5h-.74c0-.64-.08-3.51,0-5.11-1.17,3.76-3.44,5.53-7.44,5.53-3.4,0-7.06-1.56-7.06-7.33V535h.75v11c0,3.54,1.74,6.55,6.34,6.55,5.35,0,7.41-4,7.41-9V535H961Z" transform="translate(-914.55 -526.33)"/><path class="cls-2" d="M971.87,542.74c1.85-1.88,6-5.7,8.51-8.11h6l-7.91,7,8.72,11.2h-6.09l-6.17-8.4-3,2.55v5.85h-5V526.33h5Z" transform="translate(-914.55 -526.33)"/><path class="cls-2" d="M989.7,543.88c.07,5.6,3.4,8.75,7.9,8.75,3.83,0,6.17-1.91,7.23-4.25h.82c-1.14,2.73-3.8,4.92-8,4.92-6.31,0-8.68-5-8.68-9.35,0-5.5,3.36-9.43,8.68-9.43,6.66,0,8.4,5.17,8.4,8.61v.75Zm15.56-.68c-.15-4.36-2.34-8-7.73-8-4.71,0-7.62,3.58-7.8,8Z" transform="translate(-914.55 -526.33)"/></svg>`
+    const lukeLogo = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 91.4 27" style="enable-background:new 0 0 91.4 27;" xml:space="preserve">
+        <style type="text/css">
+           .st0{fill:#C8C8C8;}
+        </style>
+        <rect y="0.1" class="st0" width="19.6" height="26.4"/>
+        <rect x="21.8" y="0.1" class="st0" width="4.6" height="26.4"/>
+        <path class="st0" d="M46.5,21c0,1.8,0,4.8,0,5.5h-0.7c0-0.6-0.1-3.5,0-5.1c-1.2,3.8-3.4,5.5-7.4,5.5c-3.4,0-7.1-1.6-7.1-7.3V8.7H32
+           v11c0,3.5,1.7,6.5,6.3,6.5c5.3,0,7.4-4,7.4-9V8.7h0.7V21z"/>
+        <path class="st0" d="M57.3,16.4c1.8-1.9,6-5.7,8.5-8.1h6l-7.9,7l8.7,11.2h-6.1l-6.2-8.4l-3,2.5v5.8h-5V0h5L57.3,16.4z"/>
+        <path class="st0" d="M75.2,17.5c0.1,5.6,3.4,8.8,7.9,8.8c3.8,0,6.2-1.9,7.2-4.3h0.8c-1.1,2.7-3.8,4.9-8,4.9c-6.3,0-8.7-5-8.7-9.3
+           c0-5.5,3.4-9.4,8.7-9.4c6.7,0,8.4,5.2,8.4,8.6v0.8H75.2z M90.7,16.9c-0.2-4.4-2.3-8-7.7-8c-4.7,0-7.6,3.6-7.8,8H90.7z"/>
+        </svg>`
 
     const SvgFile = () => <SvgXml xml={lukeLogo} width='100' height='100' />
 
